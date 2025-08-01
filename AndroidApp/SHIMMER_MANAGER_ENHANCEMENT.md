@@ -265,7 +265,7 @@ class SecurityPolicy {
 **TODO: Cloud Integration**
 - [ ] Remote device management and monitoring
 - [ ] Cloud-based session data synchronization
-- [ ] Enterprise fleet management capabilities
+- [ ] Large-scale fleet management capabilities
 - [ ] Real-time device health monitoring dashboard
 
 **TODO: Advanced Analytics**

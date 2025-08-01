@@ -431,7 +431,7 @@ private const val MAX_RECONNECTION_ATTEMPTS = 3
 #### 9.1.2 Cloud Integration
 - **Remote Device Management**: Cloud-based device configuration and monitoring
 - **Data Synchronization**: Automatic session data backup and synchronization
-- **Fleet Management**: Enterprise-scale device deployment and management
+- **Fleet Management**: Large-scale device deployment and management
 
 ### 9.2 Research Opportunities
 

@@ -265,7 +265,7 @@ graph TB
         E --> H[Memory Management<br/>Optimization]
         
         I[Java] --> J[Platform Independence<br/>JVM]
-        I --> K[Enterprise Libraries<br/>Frameworks]
+        I --> K[Production Libraries<br/>Frameworks]
         I --> L[Strong Typing<br/>Reliability]
     end
     
