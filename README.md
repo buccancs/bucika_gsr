@@ -764,6 +764,16 @@ Key Android build settings:
 
 ## Troubleshooting
 
+### Recent Crash Fixes (Latest)
+
+**Android App Startup Crashes Fixed**  
+Recent updates have addressed several critical crash scenarios:
+- **ClassCastException**: Fixed HandSegmentationControlView layout issue that caused startup crashes
+- **Permission Errors**: Resolved XXPermissions library conflicts with background location permissions
+- **Manifest Permission Issues**: Enhanced permission request sequencing to prevent timing-related crashes
+
+For detailed information about these fixes, see [`docs/CRASH_FIXES.md`](docs/CRASH_FIXES.md).
+
 ### Common Issues and Solutions
 
 **Java Version Compatibility**

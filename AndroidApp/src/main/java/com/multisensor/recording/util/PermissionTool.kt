@@ -122,6 +122,40 @@ object PermissionTool {
         permissionType: String,
         callback: PermissionCallback,
     ) {
+        // Safety check: Ensure background location is never mixed with other permissions
+        // This prevents XXPermissions library restriction errors
+        val hasBackgroundLocation = permissions.contains(Permission.ACCESS_BACKGROUND_LOCATION)
+        val hasOtherPermissions = permissions.any { it != Permission.ACCESS_BACKGROUND_LOCATION }
+        
+        if (hasBackgroundLocation && hasOtherPermissions) {
+            android.util.Log.e("PermissionTool", "[ERROR] Background location cannot be requested with other permissions. Separating requests.")
+            
+            // Request non-background-location permissions first
+            val nonBackgroundPermissions = permissions.filter { it != Permission.ACCESS_BACKGROUND_LOCATION }
+            val backgroundPermissions = listOf(Permission.ACCESS_BACKGROUND_LOCATION)
+            
+            // Create a chained callback to request background location after other permissions
+            requestPermissions(context, nonBackgroundPermissions, permissionType, object : PermissionCallback {
+                override fun onAllGranted() {
+                    // Now request background location separately
+                    requestPermissions(context, backgroundPermissions, "Background Location", callback)
+                }
+                
+                override fun onTemporarilyDenied(deniedPermissions: List<String>) {
+                    callback.onTemporarilyDenied(deniedPermissions)
+                }
+                
+                override fun onPermanentlyDeniedWithSettingsOpened(deniedPermissions: List<String>) {
+                    callback.onPermanentlyDeniedWithSettingsOpened(deniedPermissions)
+                }
+                
+                override fun onPermanentlyDeniedWithoutSettings(deniedPermissions: List<String>) {
+                    callback.onPermanentlyDeniedWithoutSettings(deniedPermissions)
+                }
+            })
+            return
+        }
+        
         XXPermissions
             .with(context)
             .permission(permissions)
@@ -217,7 +251,9 @@ object PermissionTool {
         permissions.addAll(getForegroundLocationPermissions())
         // Note: Background location permissions are excluded to prevent XXPermissions library restriction
         // They are handled separately through the three-phase permission system
-        return permissions
+        
+        // Safety check: Remove any background location permissions that might have been included
+        return permissions.filter { it != Permission.ACCESS_BACKGROUND_LOCATION }
     }
 
     /**
@@ -243,7 +279,12 @@ object PermissionTool {
             permissions.add(Permission.POST_NOTIFICATIONS)
         }
 
-        return permissions
+        // Safety check: Ensure no location permissions are included
+        return permissions.filter { permission ->
+            permission != Permission.ACCESS_FINE_LOCATION &&
+            permission != Permission.ACCESS_COARSE_LOCATION &&
+            permission != Permission.ACCESS_BACKGROUND_LOCATION
+        }
     }
 
     /**

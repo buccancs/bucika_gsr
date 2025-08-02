@@ -268,9 +268,8 @@
     </LinearLayout>
 
     <!-- Hand Segmentation Control -->
-    <include
+    <com.multisensor.recording.ui.components.HandSegmentationControlView
         android:id="@+id/handSegmentationControl"
-        layout="@layout/hand_segmentation_control"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
